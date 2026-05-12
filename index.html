@@ -248,6 +248,8 @@
     border: 1px solid rgba(255,255,255,0.06);
 }
 </style>
+  <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
 </head>
 <body>
 
@@ -714,6 +716,11 @@ fun adicionarContato(){
     secs.forEach(s => { if (scrollY >= s.offsetTop - 100) cur = s.id; });
     lks.forEach(a => { a.style.color = a.getAttribute('href') === `#${cur}` ? 'var(--blue)' : ''; });
   }, { passive: true });
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<script>
+hljs.highlightAll();
 </script>
 </body>
 </html> esse é meu site, eu gostei, mas eu queria que esse código ao lado ficasse de um jeito diferente, no caso só é Main.kt e o código está diferente

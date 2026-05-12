@@ -496,28 +496,44 @@
             <span class="cptab">data class</span>
           </div>
           <div class="cpbody">
-<pre><span class="kw">data class</span> <span class="ty">usuarios</span><span class="op">(</span>
-    <span class="kw">var</span> <span class="vr">id</span><span class="op">:</span> <span class="ty">Int</span><span class="op">,</span>
-    <span class="kw">var</span> <span class="vr">nome</span><span class="op">:</span> <span class="ty">String</span><span class="op">,</span>
-    <span class="kw">var</span> <span class="vr">telefone</span><span class="op">:</span> <span class="ty">String</span>
-<span class="op">)</span>
+<pre><code class="language-kotlin">
+fun adicionarContato(){
+    println("=================================\n " +
+            "ADICIONAR CONTATO\n" +
+            "=================================\n\n" +
+            "Digite o ID:")
+    print("> ")
 
-<span class="kw">fun</span> <span class="fn">buscarContato</span><span class="op">(){</span>
-    <span class="kw">println</span><span class="op">(</span><span class="str">"Digite o ID:"</span><span class="op">)</span>
+    var id = readLine()!!
 
-    <span class="kw">var</span> <span class="vr">id</span> <span class="op">=</span> <span class="fn">readLine</span><span class="op">()!!</span>
+    if (id.toIntOrNull() == null || id.toInt() <= 0){
+        println("ERRO: ID inválido.")
+        return
 
-    <span class="kw">val</span> <span class="vr">usuario</span> <span class="op">=</span>
-        <span class="vr">usuarioscadastrados</span><span class="op">.</span><span class="fn">find</span> <span class="op">{</span>
-            <span class="vr">it</span><span class="op">.</span><span class="vr">id</span> <span class="op">==</span> <span class="vr">id</span><span class="op">.</span><span class="fn">toInt</span><span class="op">()</span>
-        <span class="op">}</span>
+    } else if(usuarioscadastrados.any {
+        it.id == id.toInt()
+    }){
+        println("ERRO: Já existe um contato com esse ID.")
+        return
+    }
 
-    <span class="kw">if</span><span class="op">(</span><span class="vr">usuario</span> <span class="op">!=</span> <span class="kw">null</span><span class="op">){</span>
-        <span class="kw">println</span><span class="op">(</span>
-            <span class="str">"${usuario.nome}"</span>
-        <span class="op">)</span>
-    <span class="op">}</span>
-<span class="op">}</span></pre>
+    println("\nDigite o telefone:")
+    print("> ")
+
+    var telefone = readLine()!!
+
+    telefone = telefone.filterNot {
+        it == '(' || it == ')' ||
+        it == '-' || it == ' '
+    }
+
+    usuarioscadastrados.add(
+        usuarios(id.toInt(), nome, telefone)
+    )
+
+    println("Contato cadastrado com sucesso!")
+}
+</code></pre>
           </div>
         </div>
       </div>

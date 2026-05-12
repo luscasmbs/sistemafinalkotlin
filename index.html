@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Contatos em Kotlin</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #0d1117;
+      color: #f0f6fc;
+      overflow-x: hidden;
+    }
+
+    header {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #0d1117, #161b22);
+    }
+
+    .hero {
+      max-width: 1200px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-size: 3.5rem;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero-text span {
+      color: #58a6ff;
+    }
+
+    .hero-text p {
+      color: #c9d1d9;
+      line-height: 1.8;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 14px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #238636, #2ea043);
+      color: white;
+      box-shadow: 0 0 20px rgba(46,160,67,0.4);
+      transform: scale(1.02);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #2ea043, #3fb950);
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 0 30px rgba(63,185,80,0.6);
+    }
+
+    .btn-secondary {
+      border: 2px solid #58a6ff;
+      color: #58a6ff;
+    }
+
+    .btn-secondary:hover {
+      background: #58a6ff;
+      color: #0d1117;
+    }
+
+    .terminal {
+      background: #010409;
+      border: 1px solid #30363d;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+    }
+
+    .terminal-top {
+      background: #161b22;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .red { background: #ff5f56; }
+    .yellow { background: #ffbd2e; }
+    .green { background: #27c93f; }
+
+    .terminal-body {
+      padding: 25px;
+      color: #3fb950;
+      font-family: monospace;
+      line-height: 1.8;
+      min-height: 420px;
+      white-space: pre-line;
+      font-size: 0.95rem;
+    }
+
+    section {
+      padding: 100px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+
+    .section-title p {
+      color: #8b949e;
+      max-width: 700px;
+      margin: auto;
+      line-height: 1.7;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 18px;
+      padding: 30px;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: #58a6ff;
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      color: #58a6ff;
+    }
+
+    .card p {
+      color: #c9d1d9;
+      line-height: 1.7;
+    }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 40px;
+    }
+
+    .tech {
+      background: #21262d;
+      border: 1px solid #30363d;
+      padding: 14px 22px;
+      border-radius: 999px;
+      font-weight: bold;
+    }
+
+    .about {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      align-items: center;
+    }
+
+    .about-box {
+      background: #161b22;
+      border-radius: 18px;
+      border: 1px solid #30363d;
+      padding: 35px;
+    }
+
+    .about-box h3 {
+      margin-bottom: 20px;
+      color: #58a6ff;
+    }
+
+    .about-box p {
+      line-height: 1.8;
+      color: #c9d1d9;
+    }
+
+    footer {
+      border-top: 1px solid #30363d;
+      padding: 40px 20px;
+      text-align: center;
+      color: #8b949e;
+    }
+
+    @media(max-width: 768px){
+      .hero-text h1 {
+        font-size: 2.5rem;
+      }
+
+      .section-title h2 {
+        font-size: 2rem;
+      }
+
+      .terminal-body {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="hero">
+
+    <div class="hero-text">
+      <h1>Sistema de <span>Contatos</span><br>em Kotlin</h1>
+
+      <p>
+        Projeto desenvolvido em Kotlin com foco em CRUD, validações,
+        tratamento de erros, manipulação de listas, organização de código
+        e experiência do usuário em terminal.
+      </p>
+
+      <div class="buttons">
+        <a href="#funcionalidades" class="btn btn-secondary">Ver Funcionalidades</a>
+        <a href="https://github.com/luscasmbs/Kotlin/blob/main/PROJETOFINAL/Main.kt" target="_blank" class="btn btn-primary">Ver Código no GitHub</a>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-top">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+      </div>
+
+      <div class="terminal-body" id="terminal-text"></div>
+    </div>
+
+  </div>
+</header>
+
+<section id="sobre">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Sobre o Projeto</h2>
+      <p>
+        Este sistema foi criado para praticar conceitos fundamentais da programação
+        utilizando Kotlin, com foco em lógica, estrutura de dados e organização.
+      </p>
+    </div>
+
+    <div class="about">
+
+      <div class="about-box">
+        <h3>Objetivo</h3>
+        <p>
+          Desenvolver um sistema de gerenciamento de contatos capaz de adicionar,
+          buscar, atualizar, listar e remover usuários utilizando validações completas
+          e uma interface organizada em terminal.
+        </p>
+      </div>
+
+      <div class="about-box">
+        <h3>Aprendizados</h3>
+        <p>
+          Durante o desenvolvimento foram utilizados conceitos como funções,
+          listas, mapas, data class, validações, loops, condicionais,
+          tratamento de erros e padronização de dados.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section id="funcionalidades">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Funcionalidades</h2>
+      <p>
+        O sistema possui diversas funcionalidades desenvolvidas para simular um sistema real.
+      </p>
+    </div>
+
+    <div class="cards">
+
+      <div class="card">
+        <h3>Adicionar Contatos</h3>
+        <p>
+          Cadastro completo com validação de ID, nome e telefone.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Buscar Contatos</h3>
+        <p>
+          Busca rápida de contatos utilizando o ID informado pelo usuário.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Atualizar Dados</h3>
+        <p>
+          Alteração de nome, ID e telefone com verificações de duplicidade.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Remover Contatos</h3>
+        <p>
+          Exclusão segura com confirmação antes da remoção.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Validações</h3>
+        <p>
+          Tratamento de erros, entradas inválidas e prevenção de dados incorretos.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Ordenação</h3>
+        <p>
+          Listagem automática dos contatos organizados por ID.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Tecnologias Utilizadas</h2>
+      <p>
+        Ferramentas e linguagens utilizadas durante o desenvolvimento do projeto.
+      </p>
+    </div>
+
+    <div class="tech-list">
+      <div class="tech">Kotlin</div>
+      <div class="tech">IntelliJ IDEA</div>
+      <div class="tech">GitHub</div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>
+    Sistema de Contatos em Kotlin • Desenvolvido por Lucas Miguel
+  </p>
+</footer>
+
+<script>
+  const text = `=================================
+ SISTEMA DE CONTATOS
+=================================
+
+1 - Adicionar contato
+2 - Buscar contato
+3 - Listar contatos
+4 - Atualizar contato
+5 - Remover contato
+0 - Sair
+
+Escolha uma opção: 1
+
+=================================
+ ADICIONAR CONTATO
+=================================
+
+Digite o ID:
+> 1
+
+Digite o nome:
+> Lucas Miguel
+
+Digite o telefone:
+> 81999999999
+
+Contato cadastrado com sucesso!`;
+
+  let index = 0;
+  const speed = 25;
+  const terminal = document.getElementById('terminal-text');
+
+  function typeEffect(){
+    if(index < text.length){
+      terminal.innerHTML += text.charAt(index);
+      index++;
+      setTimeout(typeEffect, speed);
+    }
+  }
+
+  typeEffect();
+</script>
+
+</body>
+</html>
